@@ -1,3 +1,12 @@
+## This fork is not original.
+
+I patched for esp32 SPIFFS.
+
+if you want to find original library, visit MajicDesigns/MD_MIDIFile.
+
+Thanks MajicDesigns!
+
+
 ## MD_MIDIFile Standard MIDI File Interpreter Library
 
 This library allows Standard MIDI Files (SMF) to be read from an SD card and played through a MIDI interface. SMF can be opened and processed, with MIDI and SYSEX events passed to the calling program through callback functions. This allows the calling application to manage sending to a MIDI synthesizer through serial interface or other output device, such as a MIDI shield. 
