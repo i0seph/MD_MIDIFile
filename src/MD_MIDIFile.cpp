@@ -43,7 +43,7 @@ void MD_MIDIFile::initialise(void)
 
   // File handling
   setFilename("");
-  _sd = nullptr;
+  // _sd = nullptr;
 
   // Set MIDI specified standard defaults
   setTicksPerQuarterNote(48); // 48 ticks per quarter note
@@ -72,9 +72,9 @@ MD_MIDIFile::~MD_MIDIFile()
   close();
 }
 
-void MD_MIDIFile::begin(SdFat *psd)
+void MD_MIDIFile::begin(fs::FS sffs)
 {
-  _sd = psd;
+  _sd = &sffs;
 }
 
 void MD_MIDIFile::close()
@@ -295,7 +295,8 @@ int MD_MIDIFile::load(const char *fname)
     return(E_NO_FILE);
 
   // open the file for reading
-  if (!_fd.open(_fileName, O_READ)) 
+  _fd = _sd->open(_fileName, FILE_READ);
+  if (!_fd)
     return(E_NO_OPEN);
 
   // Read the MIDI header
@@ -303,7 +304,7 @@ int MD_MIDIFile::load(const char *fname)
   {
     char    h[MTHD_HDR_SIZE+1]; // Header characters + nul
 
-    _fd.fgets(h, MTHD_HDR_SIZE+1);
+    _fd.readBytes(h, MTHD_HDR_SIZE);
     h[MTHD_HDR_SIZE] = '\0';
 
     if (strcmp(h, MTHD_HDR) != 0)

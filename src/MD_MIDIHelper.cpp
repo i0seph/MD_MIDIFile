@@ -28,28 +28,32 @@
  * \brief Main file for helper functions implementation
  */
 
-uint32_t readMultiByte(SdFile *f, uint8_t nLen)
+uint32_t readMultiByte(File *f, uint8_t nLen)
 // read fixed length parameter from input
 {
   uint32_t  value = 0L;
+  uint8_t ch[1] = {0};
   
   for (uint8_t i=0; i<nLen; i++)
   {
-    value = (value << 8) + f->read();
+    f->read(ch, 1);
+    value = (value << 8) + ch[0];
   }
   
   return(value);
 }
 
-uint32_t readVarLen(SdFile *f)
+uint32_t readVarLen(File *f)
 // read variable length parameter from input
 {
   uint32_t  value = 0;
   char      c;
+  uint8_t ch[1] = {0};
   
   do
   {
-    c = f->read();
+    f->read(ch, 1);
+    c = ch[0];
     value = (value << 7) + (c & 0x7f);
   }  while (c & 0x80);
   
